@@ -8,6 +8,153 @@
 
 import Foundation
 
+/************************ Extensions   ******************/
+
+// Extensions
+
+// Computed Properties
+print("\n Extensions: computed properties ")
+extension Double {
+    var km: Double { return self * 1_000.0 }
+    var m:  Double { return self}
+    var cm: Double { return self/100.0 }
+    var mm: Double { return self/1_000.0 }
+    var ft: Double { return self/3.28084 }
+}
+let oneInch = 25.4.mm
+print(" One inch is \(oneInch) meters")
+
+let threeFeet = 3.ft
+print(" Three feer is \(threeFeet) meters")
+
+let aMarathon = 42.km + 195.m
+print(" A amrathon is \(aMarathon) meters long")
+
+// Initializers
+print("\n Initializer")
+struct Size{
+    var width = 0.0, height = 0.0
+}
+struct Point {
+    var x=0.0, y=0.0
+}
+
+struct Rect {
+    var origin = Point()
+    var size = Size()
+}
+
+let defaultRect = Rect()
+let memberwiseRect = Rect(origin: Point(x:2.0, y:2.0), size: Size(width:5.0, height:5.0))
+
+print(" memberwiseRect origin = (\(memberwiseRect.origin.x),\(memberwiseRect.origin.y))")
+print(" memberwiseRect Size = ( \(memberwiseRect.size.width), \(memberwiseRect.size.height)")
+
+extension Rect {
+    init(center: Point, size: Size) {
+        let originX = center.x - (size.width/2)
+        let originY = center.y - (size.height/2)
+        self.init(origin:Point(x:originX, y:originY), size:size)
+    }
+}
+
+let centerRect = Rect(center: Point(x:4.0, y:4.0), size: Size(width: 3.0, height: 3.0))
+print(" centerRect origin = (\(centerRect.origin.x),\(centerRect.origin.y))")
+print(" centerRect Size = ( \(centerRect.size.width), \(centerRect.size.height)")
+
+//Methods
+print("\n Methods")
+extension Int {
+    func repetitions(_ task: ()->() ){
+        for _ in 0..<self {
+            task()
+        }
+    }
+}
+
+3.repetitions({ print(" Hello!") })
+
+3.repetitions { print("GoodBye !")}
+
+
+// Mutating Instance Methods
+
+print("\n Mutating Istance Methods")
+extension Int{
+    mutating func square() {
+        self = self * self
+    }
+}
+
+var someInt = 3
+
+someInt.square()
+
+print("SomeInt = \(someInt)")
+
+//Subscripts
+print("\n Subsripts")
+extension Int{
+    subscript( digitIndex:Int) ->Int {
+        var decimalBase = 1
+        for _ in 0..<digitIndex  {
+            decimalBase *= 10
+        }
+        return (self/decimalBase) % 10
+    }
+}
+
+
+print(74638295[0])
+
+print(746381295[1])
+
+print(746381295[9])  // as if you have requested 0746381295[9]
+
+print(1746381295[9])
+
+
+
+// Nested Type
+print("\n Nested Type")
+extension Int{
+    enum Kind {
+        case negative, zero, positive
+    }
+    var kind: Kind {
+        switch self {
+        case 0:
+            return .zero
+        case let x  where x > 0 :
+            return .positive
+        default:
+            return .negative
+        }
+    }
+}
+
+func printIntegerKinds(_ numbers: [Int] ) {
+    for number in numbers {
+        switch number.kind {
+        case .negative:
+            print("- ", terminator: "")
+        case .zero:
+            print("0 ", terminator: "")
+        case .positive:
+            print("+ ", terminator: "")
+        }
+    }
+}
+printIntegerKinds([3,19,-27,0,-6,0,7])
+print("\n")
+/************************ Extensions   ******************/
+
+
+
+
+
+
+
 // Definition of protocol
 protocol FullyNamed {
     var fullName: String { get}
